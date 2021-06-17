@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31313.79
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchInExcel", "SearchInExcel.csproj", "{BB724A55-15E2-4499-8A4F-433628231085}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BB724A55-15E2-4499-8A4F-433628231085}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB724A55-15E2-4499-8A4F-433628231085}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB724A55-15E2-4499-8A4F-433628231085}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB724A55-15E2-4499-8A4F-433628231085}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {39A77C2D-4DC3-4432-9ED4-85D2420D6ED2}
+	EndGlobalSection
+EndGlobal
