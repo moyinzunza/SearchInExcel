@@ -90,8 +90,10 @@ namespace SearchInExcel
             this.Controls.Add(this.logBox);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button1);
+            this.MaximumSize = new System.Drawing.Size(816, 489);
+            this.MinimumSize = new System.Drawing.Size(816, 489);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Search In Excel";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

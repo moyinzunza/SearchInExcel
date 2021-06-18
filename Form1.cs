@@ -84,7 +84,7 @@ namespace SearchInExcel
                 "Y",
                 "Z"};
             WorkbookPart workbookPart = ImportExcel(filepath);
-            var sheets = workbookPart.Workbook.Descendants<Sheet>();
+            var sheets = workbookPart.Workbook.Descendants<Sheet>().ToList();
 
             foreach(var sheet in sheets) {
 
@@ -93,37 +93,62 @@ namespace SearchInExcel
                 if (sheet != null)
                 {
 
-                    logBox.Text = logBox.Text + Environment.NewLine + sheet.Name;
+                    logBox.Text = logBox.Text + Environment.NewLine + "SheetName: "+sheet.Name;
                     var worksheetPart = (WorksheetPart)workbookPart.GetPartById(sheet.Id);
                     var rows = worksheetPart.Worksheet.Descendants<Row>().ToList();
 
                     // Remove the header row
-                    rows.RemoveAt(0);
+                    if(rows.Count > 0)
+                    {
+                        //rows.RemoveAt(0);
+                    }
+
+                    //logBox.Text = logBox.Text + Environment.NewLine + rows.Count;
+
 
                     foreach (var row in rows)
                     {
                         var cellss = row.Elements<Cell>().ToList();
 
+                        //logBox.Text = logBox.Text + Environment.NewLine + cellss.Count;
+
                         foreach (var cell in cellss)
                         {
-                            var value = cell.InnerText;
 
-                            //logBox.Text = logBox.Text + Environment.NewLine + value;
-
-                            var stringTable = workbookPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault();
-                            int value_int = 0;
-
-                            //hay un problema en este parse
-                            if (!int.TryParse(value, out value_int)) value_int = 0;
-
-                            value = stringTable.SharedStringTable.ElementAt(value_int).InnerText;
-                            bool isFound = value.Trim().ToLower().Contains(search.Trim().ToLower());
-
-                            if (isFound)
+                            if (cell.StyleIndex != null)
                             {
-                                int letterindx = (int)(GetColumnIndex(cell.CellReference) - 1);
-                                index = $"[{letters[letterindx]}{row.RowIndex}]";
-                                logBox.Text = logBox.Text + Environment.NewLine + index+" "+value;
+                                var value = cell.InnerText;
+
+                                //logBox.Text = logBox.Text + Environment.NewLine + cell.InlineString;
+
+                                var stringTable = workbookPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault();
+                                int value_int = 0;
+
+                                //hay un problema en este parse
+                                if (!int.TryParse(value, out value_int)) value_int = 0;
+
+                                
+                                if (value_int != 0)
+                                {
+                                    try {
+                                        value = stringTable.SharedStringTable.ElementAt(value_int).InnerText;
+                                    } catch (ArgumentOutOfRangeException e){
+                                        value = value_int.ToString();
+                                    }
+
+                                } else { 
+                                    value = ""; 
+                                }
+                                bool isFound = value.Trim().ToLower().Contains(search.Trim().ToLower());
+
+                                //logBox.Text = logBox.Text + Environment.NewLine + value;
+
+                                if (isFound)
+                                {
+                                    int letterindx = (int)(GetColumnIndex(cell.CellReference) - 1);
+                                    index = $"[{letters[letterindx]}{row.RowIndex}]";
+                                    logBox.Text = logBox.Text + Environment.NewLine + cell.CellReference.InnerText + " " + value;
+                                }
                             }
 
                         }
@@ -164,12 +189,16 @@ namespace SearchInExcel
 
         private void searchButton_Click(object sender, EventArgs e)
         {
+
+            logBox.Text = "";
+
             DirectoryInfo d = new DirectoryInfo(textBox1.Text); //Assuming Test is your Folder
 
             FileInfo[] Files = d.GetFiles("*.xlsx"); //Getting Text files
 
             foreach (FileInfo file in Files)
             {
+                
                 GetIndexBySearch(searchBox.Text, file.FullName);
             }
         }
